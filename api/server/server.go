@@ -1,8 +1,9 @@
 package server
 
 import (
-	"clicktrail/api/config"
 	"net/http"
+
+	"github.com/Rishi-Mishra0704/ClickTrail/api/config"
 
 	"github.com/gin-gonic/gin"
 )

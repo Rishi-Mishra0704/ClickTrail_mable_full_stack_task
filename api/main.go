@@ -1,9 +1,10 @@
 package main
 
 import (
-	"clicktrail/api/config"
-	"clicktrail/api/server"
 	"log"
+
+	"github.com/Rishi-Mishra0704/ClickTrail/api/config"
+	"github.com/Rishi-Mishra0704/ClickTrail/api/server"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module clicktrail/api
+module github.com/Rishi-Mishra0704/ClickTrail/api
 
 go 1.24.2
 
