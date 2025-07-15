@@ -1,56 +1,45 @@
-import { ActionFunction } from "@remix-run/node";
-import ApiClient from "../services/api_client";
-import { API_ROUTES, PAGE_ROUTES } from "@/constants";
-import { Form, Link, redirect, useActionData, useNavigation } from "@remix-run/react";
+import { PAGE_ROUTES } from "@/lib/constants";
+import {
+  Link,
+  useNavigate,
+} from "@remix-run/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  if (!email || !password) {
-    return Response.json(
-      { error: "All fields are required." },
-      { status: 400 }
-    );
-  }
-
-  try {
-    const { postData: LoginRequest } = ApiClient<SignupResponse>();
-    const res = await LoginRequest(API_ROUTES.auth.login, {
-      email,
-      password,
-    });
-
-    if (!res?.success) {
-      
-      return Response.json({ error: res?.message });
-    }
-    return redirect(PAGE_ROUTES.base);
-  } catch (err: any) {
-    console.error("Signup failed:", err);
-    return Response.json(
-      { error: "Signup failed. Try again later." },
-      { status: 500 }
-    );
-  }
-};
+import { useUserStore } from "@/store/user-store";
+import { useState } from "react";
 
 const Login = () => {
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-const actionData = useActionData() as SignupActionData;
+  const login = useUserStore((s) => s.login);
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const form = new FormData(e.currentTarget);
+    const email = form.get("email") as string;
+    const password = form.get("password") as string;
+
+    const err = await login(email, password);
+
+    if (err) {
+      setError(err);
+      setIsSubmitting(false);
+      return;
+    }
+
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-md p-6 rounded-2xl shadow-md">
         <CardContent>
           <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
-          <Form method="post" className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
               <Input id="email" name="email" type="email" required />
@@ -63,7 +52,7 @@ const actionData = useActionData() as SignupActionData;
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Logging In..." : "Login"}
             </Button>
-          </Form>
+          </form>
           <div className="border-t border-gray-200 pt-4 text-center text-sm text-gray-600">
             <span>Don't have an account? </span>
             <Link
@@ -73,9 +62,9 @@ const actionData = useActionData() as SignupActionData;
               Sign up
             </Link>
           </div>
-           {actionData?.error && (
+          {error && (
             <div className="text-sm text-red-600 text-center bg-red-100 p-2 rounded-md border border-red-300 my-2">
-              {actionData?.error}
+              {error}
             </div>
           )}
         </CardContent>

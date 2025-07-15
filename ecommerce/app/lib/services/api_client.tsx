@@ -1,7 +1,6 @@
-import { API_BASE_URL } from "@/constants";
+import { API_BASE_URL } from "@/lib/constants";
 
 interface APIState<T> {
-  data: T | undefined;
   getData: (url: string) => Promise<T | undefined>;
   postData: (url: string, body: unknown) => Promise<T | undefined>;
   putData: (url: string, body: unknown) => Promise<T | undefined>;
@@ -14,7 +13,7 @@ const DEFAULT_HEADERS = (accessToken?: string) => ({
 });
 
 const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
-  let data: T | undefined = undefined; // ← keep data in closure scope
+  let data: T; // ← keep data in closure scope
 
   const getData = async (url: string) => {
     try {
@@ -31,7 +30,7 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
       return data;
     } catch (err) {
       console.error("GET failed:", err);
-      return undefined;
+      return err;
     }
   };
 
@@ -71,7 +70,7 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
       return data;
     } catch (err) {
       console.error("PUT failed:", err);
-      return undefined;
+      return err;
     }
   };
 
@@ -90,14 +89,11 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
       return data;
     } catch (err) {
       console.error("DELETE failed:", err);
-      return undefined;
+      return err;
     }
   };
 
   return {
-    get data() {
-      return data;
-    },
     getData,
     postData,
     putData,

@@ -3,12 +3,10 @@ package models
 import (
 	"errors"
 	"sync"
-
-	"github.com/google/uuid"
 )
 
 type User struct {
-	ID       string `json:"id"`
+	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -35,9 +33,8 @@ func CreateUser(name, email, password string) (User, error) {
 		}
 	}
 
-	id := uuid.New().String()
 	user := User{
-		ID:       id,
+		ID:       len(users) + 1,
 		Name:     name,
 		Email:    email,
 		Password: password,

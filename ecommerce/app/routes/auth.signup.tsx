@@ -1,57 +1,38 @@
-import { ActionFunction } from "@remix-run/node";
-import ApiClient from "../services/api_client";
-import { API_ROUTES, PAGE_ROUTES } from "@/constants";
-import {
-  Form,
-  Link,
-  redirect,
-  useActionData,
-  useNavigation,
-} from "@remix-run/react";
+import { useState } from "react";
+import { useNavigate } from "@remix-run/react";
+import { useUserStore } from "@/store/user-store";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  if (!name || !email || !password) {
-    return Response.json(
-      { error: "All fields are required." },
-      { status: 400 }
-    );
-  }
-
-  try {
-    const { postData: signupRequest } = ApiClient<SignupResponse>();
-    const res = await signupRequest(API_ROUTES.auth.signup, {
-      name,
-      email,
-      password,
-    });
-
-    if (!res?.success) {
-      return Response.json({ error: res?.message });
-    }
-    return redirect(PAGE_ROUTES.auth.login);
-  } catch (err: unknown) {
-    console.error("Signup failed:", err);
-    return Response.json(
-      { error: "Signup failed. Try again later." },
-      { status: 500 }
-    );
-  }
-};
+import { Link } from "@remix-run/react";
+import { PAGE_ROUTES } from "@/lib/constants";
 
 const Signup = () => {
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-  const actionData = useActionData() as SignupActionData;
+  const signup = useUserStore((s) => s.signup);
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const form = new FormData(e.currentTarget);
+    const name = form.get("name") as string;
+    const email = form.get("email") as string;
+    const password = form.get("password") as string;
+
+    const err = await signup(name, email, password);
+    if (err) {
+      setError(err);
+      setIsSubmitting(false);
+      return;
+    }
+
+    navigate(PAGE_ROUTES.auth.login);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-md p-6 rounded-2xl shadow-lg border border-gray-200 bg-white">
@@ -65,7 +46,7 @@ const Signup = () => {
             </p>
           </div>
 
-          <Form method="post" className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-4">
             <div>
               <Label htmlFor="name">Name</Label>
               <Input id="name" name="name" required />
@@ -79,14 +60,10 @@ const Signup = () => {
               <Input id="password" name="password" type="password" required />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full mt-2"
-              disabled={isSubmitting}
-            >
+            <Button type="submit" className="w-full mt-2" disabled={isSubmitting}>
               {isSubmitting ? "Creating Account..." : "Sign Up"}
             </Button>
-          </Form>
+          </form>
 
           <div className="border-t border-gray-200 pt-4 text-center text-sm text-gray-600">
             <span>Already have an account? </span>
@@ -97,9 +74,10 @@ const Signup = () => {
               Sign In
             </Link>
           </div>
-          {actionData?.error && (
+
+          {error && (
             <div className="text-sm text-red-600 text-center bg-red-100 p-2 rounded-md border border-red-300 my-2">
-              {actionData.error}
+              {error}
             </div>
           )}
         </CardContent>

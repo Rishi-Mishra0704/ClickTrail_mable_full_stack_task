@@ -5,9 +5,11 @@ import (
 	"encoding/hex"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/Rishi-Mishra0704/ClickTrail/api/config"
 	"github.com/Rishi-Mishra0704/ClickTrail/api/token"
+	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,7 +53,14 @@ func (s *Server) setupRouter() {
 		router.Use(gin.Logger())
 	}
 	router.Use(gin.Recovery())
-
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 	// Health route
 	router.GET("/hello", func(c *gin.Context) {
 		c.String(http.StatusOK, "Hello, World!")
