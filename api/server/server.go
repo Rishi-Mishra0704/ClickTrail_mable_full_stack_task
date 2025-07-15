@@ -60,7 +60,7 @@ func (s *Server) setupRouter() {
 	// Auth routes
 	auth := router.Group("/auth")
 
-	auth.POST("/signup", s.Signup)
+	auth.POST("/register", s.Signup)
 	auth.POST("/login", s.Login)
 
 	s.router = router

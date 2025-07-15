@@ -11,7 +11,7 @@ type User struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Password string `json:"password"` // Ideally hashed
+	Password string `json:"password"`
 }
 
 var (
@@ -42,20 +42,20 @@ func CreateUser(name, email, password string) (User, error) {
 		Email:    email,
 		Password: password,
 	}
-	users[id] = user
+	users[email] = user
 	return user, nil
 }
 
-// GetUser returns a user by ID
-func GetUser(id string) (User, error) {
-	if id == "" {
-		return User{}, errors.New("invalid user id")
+// GetUser returns a user by Email
+func GetUser(email string) (User, error) {
+	if email == "" {
+		return User{}, errors.New("invalid user email")
 	}
 
 	usersMu.RLock()
 	defer usersMu.RUnlock()
 
-	user, exists := users[id]
+	user, exists := users[email]
 	if !exists {
 		return User{}, errors.New("user not found")
 	}

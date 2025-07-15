@@ -1,6 +1,10 @@
 package config
 
 import (
+	"log"
+	"path/filepath"
+	"runtime"
+
 	"github.com/spf13/viper"
 )
 
@@ -13,8 +17,12 @@ type Config struct {
 }
 
 func LoadConfig(path string) (config Config, err error) {
-	viper.SetConfigFile(path + "/.env")
+	_, filename, _, _ := runtime.Caller(0)
+	basePath := filepath.Dir(filename) // points to ./api/config/
+	envPath := filepath.Join(basePath, "..", ".env")
 
+	log.Print(envPath)
+	viper.SetConfigFile(envPath)
 	viper.AutomaticEnv()
 
 	if err = viper.ReadInConfig(); err != nil {

@@ -35,4 +35,7 @@ build-mac-arm64: clean
 	@GOOS=darwin GOARCH=arm64 go build -o ./bin/ClickTrail ./main.go
 	@chmod +x ./bin/ClickTrail
 
-.PHONY: clean clean-win build test build-mac build-linux build-windows build-all build-windows-386 build-mac-arm64
+run: build
+	@cd api && ./bin/ClickTrail
+
+.PHONY: clean clean-win build test build-mac build-linux build-windows build-all build-windows-386 build-mac-arm64 run run-win

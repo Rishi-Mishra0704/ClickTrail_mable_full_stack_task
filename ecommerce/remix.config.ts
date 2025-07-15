@@ -2,7 +2,9 @@
 import type { AppConfig } from "@remix-run/dev";
 
 const config: AppConfig = {
-  appDirectory: "src/app",
+  appDirectory: "app",
+  tailwind: true,
+  postcss: true,
 };
 
 export default config;
