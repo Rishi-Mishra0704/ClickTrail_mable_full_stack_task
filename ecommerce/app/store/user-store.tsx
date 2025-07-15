@@ -27,7 +27,7 @@ export const useUserStore = create<UserStore>()(
 
       login: async (email, password) => {
         try {
-          const { postData } = ApiClient<any>();
+          const { postData } = ApiClient<LoginResponse>();
           const res = await postData(API_ROUTES.auth.login, {
             email,
             password,
@@ -46,7 +46,7 @@ export const useUserStore = create<UserStore>()(
 
       signup: async (name, email, password) => {
         try {
-          const { postData } = ApiClient<any>();
+          const { postData } = ApiClient<SignupResponse>();
           const res = await postData(API_ROUTES.auth.signup, {
             name,
             email,

@@ -45,3 +45,5 @@ type AuthUser = {
   token: string;
   expires_at: string;
 };
+
+type LoginResponse = GeneralResponse<AuthUser>
