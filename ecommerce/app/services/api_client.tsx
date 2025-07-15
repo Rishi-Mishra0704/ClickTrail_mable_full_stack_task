@@ -23,7 +23,10 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
         headers: DEFAULT_HEADERS(),
       });
 
-      if (!res.ok) throw new Error(`GET ${url} failed: ${res.status}`);
+      if (!res.ok) {
+        const error = await res.json();
+        return error;
+      }
       data = await res.json();
       return data;
     } catch (err) {
@@ -40,12 +43,15 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) throw new Error(`POST ${url} failed: ${res.status}`);
+      if (!res.ok) {
+        const error = await res.json();
+        return error;
+      }
       data = await res.json();
       return data;
     } catch (err) {
       console.error("POST failed:", err);
-      return undefined;
+      return err;
     }
   };
 
@@ -57,7 +63,10 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) throw new Error(`PUT ${url} failed: ${res.status}`);
+      if (!res.ok) {
+        const error = await res.json();
+        return error;
+      }
       data = await res.json();
       return data;
     } catch (err) {
@@ -73,7 +82,10 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
         headers: DEFAULT_HEADERS(),
       });
 
-      if (!res.ok) throw new Error(`DELETE ${url} failed: ${res.status}`);
+      if (!res.ok) {
+        const error = await res.json();
+        return error;
+      }
       data = await res.json();
       return data;
     } catch (err) {
@@ -82,7 +94,15 @@ const ApiClient = <T,>(baseUrl?: string): APIState<T> => {
     }
   };
 
-  return { get data() { return data; }, getData, postData, putData, deleteData };
+  return {
+    get data() {
+      return data;
+    },
+    getData,
+    postData,
+    putData,
+    deleteData,
+  };
 };
 
 export default ApiClient;

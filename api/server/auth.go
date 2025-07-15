@@ -65,13 +65,13 @@ func (s *Server) Login(c *gin.Context) {
 	// 1. Lookup user by email
 	user, err := models.GetUser(req.Email)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, ErrorResponse(err, "Invalid email or password"))
+		c.JSON(http.StatusUnauthorized, ErrorResponse(err, "User was not found in DB"))
 		return
 	}
 
 	// 2. Check password
 	if err := utils.CheckPassword(req.Password, user.Password); err != nil {
-		c.JSON(http.StatusUnauthorized, ErrorResponse(err, "Invalid email or password"))
+		c.JSON(http.StatusUnauthorized, ErrorResponse(err, "Invalid password"))
 		return
 	}
 

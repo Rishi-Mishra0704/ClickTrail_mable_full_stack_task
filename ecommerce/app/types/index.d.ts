@@ -14,3 +14,7 @@ type GeneralResponse<T> = {
 }
 
 type SignupResponse = GeneralResponse<User>;
+
+type SignupActionData = {
+  error?: string;
+};
