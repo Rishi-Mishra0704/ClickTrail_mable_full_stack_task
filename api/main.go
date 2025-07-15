@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+
 	// Load environment/configuration variables from the project root (e.g., .env)
 	cfg, err := config.LoadConfig(".")
 	if err != nil {

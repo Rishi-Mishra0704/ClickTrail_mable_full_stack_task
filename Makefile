@@ -10,7 +10,7 @@ clean-win:
 	@if exist api\\ClickTrail (del /q api\\ClickTrail)
 
 test:
-	@go test -v ./...
+	@cd api && go test -v ./...
 
 build: clean
 	@mkdir -p bin

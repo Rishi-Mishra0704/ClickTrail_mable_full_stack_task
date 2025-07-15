@@ -1,17 +1,17 @@
 package server
 
-func ErrorResponse(err error, message string, code int) map[string]any {
+func ErrorResponse(err error, message string) map[string]any {
 	return map[string]any{
-		"code":    code,
+		"success": false,
 		"error":   err.Error(),
 		"message": message,
 	}
 }
 
-func SuccessResponse(data any) map[string]any {
+func SuccessResponse(data any, message string) map[string]any {
 	return map[string]any{
-		"code":    200,
-		"message": "success",
+		"success": true,
+		"message": message,
 		"data":    data,
 	}
 }
