@@ -152,5 +152,5 @@ Fullstack Engineer | 3 Years 7 Months EXP
 ---
 
 ## 📜 License
-[LICENCE](./LICENCE)
+[LICENSE](./LICENSE)
 
