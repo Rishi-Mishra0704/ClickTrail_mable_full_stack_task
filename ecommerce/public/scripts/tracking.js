@@ -63,6 +63,7 @@
     window.addEventListener("click", (e) => {
       const target = e.target;
       if (!target) return;
+      console.log("[TRACKING] Clicked:", target);
 
       // Detect add to cart
       if (target.matches("[data-track='add-to-cart']")) {

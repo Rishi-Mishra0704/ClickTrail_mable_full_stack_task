@@ -9,11 +9,14 @@ import (
 )
 
 type Config struct {
-	Mode            string `mapstructure:"MODE"`
-	Port            string `mapstructure:"PORT"`
-	ClickHouseDBURL string `mapstructure:"CLICKHOUSE_DB_URL"`
-	JWTSecretKey    string `mapstructure:"JWT_SECRET_KEY"`
-	TokenDuration   string `mapstructure:"TOKEN_DURATION"`
+	Mode               string `mapstructure:"MODE"`
+	Port               string `mapstructure:"PORT"`
+	ClickHouseHost     string `mapstructure:"CLICKHOUSE_HOST"`
+	ClickHousePort     string `mapstructure:"CLICKHOUSE_PORT"`
+	ClickHousePassword string `mapstructure:"CLICKHOUSE_PASSWORD"`
+	ClickHouseUser     string `mapstructure:"CLICKHOUSE_USER"`
+	JWTSecretKey       string `mapstructure:"JWT_SECRET_KEY"`
+	TokenDuration      string `mapstructure:"TOKEN_DURATION"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

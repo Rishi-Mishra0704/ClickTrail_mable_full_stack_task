@@ -98,7 +98,7 @@ const CartCheckout = () => {
         Total: ${totalPrice.toFixed(2)}
       </div>
       <div className="flex justify-center mt-4">
-        <Button className="w-full mt-10" data-track="checkout">
+        <Button className="mt-10" data-track="checkout" onClick={handleCheckout}>
           Proceed to Checkout
         </Button>
 

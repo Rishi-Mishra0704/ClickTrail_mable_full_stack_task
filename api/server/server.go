@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/Rishi-Mishra0704/ClickTrail/api/config"
 	"github.com/Rishi-Mishra0704/ClickTrail/api/token"
 	"github.com/gin-contrib/cors"
@@ -15,12 +16,13 @@ import (
 )
 
 type Server struct {
-	router *gin.Engine
-	config config.Config
-	maker  token.Maker
+	router     *gin.Engine
+	config     config.Config
+	maker      token.Maker
+	clickhouse clickhouse.Conn
 }
 
-func NewServer(config config.Config) (*Server, error) {
+func NewServer(config config.Config, clickhouse clickhouse.Conn) (*Server, error) {
 	bytes := make([]byte, 16) // 16 bytes → 32 hex chars
 	if _, err := rand.Read(bytes); err != nil {
 		log.Fatal("failed to generate random bytes:", err)
@@ -33,8 +35,9 @@ func NewServer(config config.Config) (*Server, error) {
 	}
 
 	server := &Server{
-		config: config,
-		maker:  maker,
+		config:     config,
+		maker:      maker,
+		clickhouse: clickhouse,
 	}
 	server.setupRouter()
 	return server, nil
@@ -71,6 +74,10 @@ func (s *Server) setupRouter() {
 
 	auth.POST("/register", s.Signup)
 	auth.POST("/login", s.Login)
+
+	// Event Routes
+	event := router.Group("/events")
+	event.POST("/add", s.TrackEventHandler)
 
 	s.router = router
 }

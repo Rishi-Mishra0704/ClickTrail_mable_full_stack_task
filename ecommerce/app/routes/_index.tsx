@@ -1,6 +1,6 @@
 import { API_ROUTES, FAKESTORE_API_URL } from "@/lib/constants";
 import ApiClient from "@/lib/services/api_client";
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,16 @@ import { groupByCategory } from "@/utils/array-utils";
 import PageLayout from "@/components/layout/page-layout";
 import { useCartStore } from "@/store/cart-store";
 import { useAuthGuard } from "@/store/user-store";
+
+
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "New Remix App" },
+    { name: "description", content: "Welcome to Remix!" },
+  ];
+};
+
 
 export const loader: LoaderFunction = async (): Promise<Response> => {
   const { getData: getProductData } = ApiClient<Product[]>(FAKESTORE_API_URL);
