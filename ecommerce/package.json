@@ -9,8 +9,7 @@
     "dev": "npm run copy-scripts && remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc",
-    "deploy": "wrangler deploy"
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",
