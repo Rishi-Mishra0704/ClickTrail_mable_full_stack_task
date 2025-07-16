@@ -2,3 +2,4 @@ GRAFANA DASHBOARD: https://rishimishra0404.grafana.net/goto/Fjpbq58NR?orgId=1
 
 FRONTEND: https://click-trail-mable-full-stack-task.vercel.app/
 
+WALKTHROUGH VIDEO: https://www.loom.com/share/a09f5bfa5cf5409693fb530060c450f7?sid=d5192ca3-42f9-4225-b2fa-643ecea22cac
