@@ -9,6 +9,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/Rishi-Mishra0704/ClickTrail/api/config"
+	"github.com/Rishi-Mishra0704/ClickTrail/api/middleware"
 	"github.com/Rishi-Mishra0704/ClickTrail/api/token"
 	"github.com/gin-contrib/cors"
 
@@ -78,7 +79,10 @@ func (s *Server) setupRouter() {
 	// Event Routes
 	event := router.Group("/events")
 	event.POST("/add", s.TrackEventHandler)
-	event.GET("/stats", s.StatsHandler)
+	// Protected sub-group
+	protected := event.Group("/")
+	protected.Use(middleware.AuthMiddleware(s.maker))
+	protected.GET("/stats", s.StatsHandler)
 	s.router = router
 }
 

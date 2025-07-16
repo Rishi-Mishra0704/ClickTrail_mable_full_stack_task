@@ -1,4 +1,4 @@
-package server
+package response
 
 func ErrorResponse(err error, message string) map[string]any {
 	return map[string]any{
