@@ -14,7 +14,7 @@ test:
 
 build: clean
 	@mkdir -p bin
-	@cd api && go build -o ./bin/ClickTrail.exe ./main.go
+	@cd api && go build -o ./bin/ClickTrail ./main.go
 	@chmod +x ./bin/ClickTrail
 
 
