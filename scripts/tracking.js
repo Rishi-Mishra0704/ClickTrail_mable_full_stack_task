@@ -1,6 +1,5 @@
-
 (function () {
-  const TRACKING_ENDPOINT = import.meta.env.VITE_TRACKING_ENDPOINT;;
+  const TRACKING_ENDPOINT = "https://clicktrail-mable-full-stack-task.onrender.com/events/add";
 
   const sessionId = (() => {
     const key = "clicktrail_session_id";
