@@ -1,42 +1,45 @@
 clean:
-	@rm -rf api/bin
-	@rm -rf api/bin/ClickTrail
-	@rm -rf api/bin/ClickTrail.exe
-
+	@rm -rf bin
+	@rm -rf bin/ClickTrail
+	@rm -rf bin/ClickTrail.exe
 
 clean-win:
-	@if exist api\\bin (rmdir /s /q api\\bin)
-	@if exist api\\ClickTrail.exe (del /q api\\ClickTrail.exe)
-	@if exist api\\ClickTrail (del /q api\\ClickTrail)
+	@if exist bin (rmdir /s /q bin)
+	@if exist bin\\ClickTrail.exe (del /q bin\\ClickTrail.exe)
+	@if exist bin\\ClickTrail (del /q bin\\ClickTrail)
 
 test:
 	@cd api && go test -v ./...
 
 build: clean
 	@mkdir -p bin
-	@cd api && go build -o ./bin/ClickTrail ./main.go
-	@chmod +x api/bin/ClickTrail
-
+	@go build -o ./bin/ClickTrail ./api/main.go
+	@chmod +x ./bin/ClickTrail
 
 build-mac: clean
-	@cd api && GOOS=darwin GOARCH=amd64 go build -o ./bin/ClickTrail ./main.go
+	@mkdir -p bin
+	@GOOS=darwin GOARCH=amd64 go build -o ./bin/ClickTrail ./api/main.go
 	@chmod +x ./bin/ClickTrail
 
 build-linux: clean
-	@cd api && GOOS=linux GOARCH=amd64 go build -o ./bin/ClickTrail ./main.go
+	@mkdir -p bin
+	@GOOS=linux GOARCH=amd64 go build -o ./bin/ClickTrail ./api/main.go
 	@chmod +x ./bin/ClickTrail
 
 build-windows: clean-win
-	@cd api && set GOOS=windows&& set GOARCH=amd64&& go build -o ./bin/ClickTrail.exe main.go
+	@mkdir bin
+	@set GOOS=windows&& set GOARCH=amd64&& go build -o ./bin/ClickTrail.exe ./api/main.go
 
 build-windows-386: clean-win
-	@cd api && set GOOS=windows&& set GOARCH=386&& go build -o ./bin/ClickTrail.exe main.go
+	@mkdir bin
+	@set GOOS=windows&& set GOARCH=386&& go build -o ./bin/ClickTrail.exe ./api/main.go
 
 build-mac-arm64: clean
-	@GOOS=darwin GOARCH=arm64 go build -o ./bin/ClickTrail ./main.go
+	@mkdir -p bin
+	@GOOS=darwin GOARCH=arm64 go build -o ./bin/ClickTrail ./api/main.go
 	@chmod +x ./bin/ClickTrail
 
 run: build
-	@cd api && ./bin/ClickTrail
+	@./bin/ClickTrail
 
-.PHONY: clean clean-win build test build-mac build-linux build-windows build-all build-windows-386 build-mac-arm64 run run-win
+.PHONY: clean clean-win build test build-mac build-linux build-windows build-windows-386 build-mac-arm64 run
