@@ -1,10 +1,6 @@
 name = "clicktrail-remix"
-main = "./ecommerce/build/server/index.js"              
-compatibility_date = "2025-07-16"
-compatibility_flags = ["nodejs_compat"]
 
 [build]
 command = "npm run build"
-
-[site]
-bucket = "./public"                           
+# This is required for Pages – tell Pages where the final static output is
+pages_build_output_dir = "public"
