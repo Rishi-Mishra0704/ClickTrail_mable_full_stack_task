@@ -1,6 +1,0 @@
-name = "clicktrail-remix"
-
-[build]
-command = "npm run build"
-# This is required for Pages – tell Pages where the final static output is
-pages_build_output_dir = "build"
