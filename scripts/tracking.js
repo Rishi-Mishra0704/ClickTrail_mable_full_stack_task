@@ -1,5 +1,5 @@
 (function () {
-  const TRACKING_ENDPOINT = "http://localhost:8080/events/add";
+  const TRACKING_ENDPOINT = "https://clicktrail-mable-full-stack-task.onrender.com";
 
   const sessionId = (() => {
     const key = "clicktrail_session_id";
