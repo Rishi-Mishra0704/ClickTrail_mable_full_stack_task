@@ -78,7 +78,7 @@ func (s *Server) setupRouter() {
 	// Event Routes
 	event := router.Group("/events")
 	event.POST("/add", s.TrackEventHandler)
-
+	event.GET("/stats", s.StatsHandler)
 	s.router = router
 }
 

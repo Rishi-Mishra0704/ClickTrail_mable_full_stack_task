@@ -73,3 +73,37 @@ func (s *Server) TrackEventHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
+func (s *Server) StatsHandler(c *gin.Context) {
+	rows, err := s.clickhouse.Query(context.Background(), `
+		SELECT
+			event_type,
+			toStartOfMinute(timestamp) AS minute,
+			count(*) AS total
+		FROM events
+		GROUP BY event_type, minute
+		ORDER BY minute DESC
+		LIMIT 100
+	`)
+	if err != nil {
+		log.Println("stats query failed:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to query stats"})
+		return
+	}
+
+	type Stat struct {
+		EventType string    `json:"eventType"`
+		Minute    time.Time `json:"minute"`
+		Count     uint64    `json:"count"`
+	}
+
+	var stats []Stat
+	for rows.Next() {
+		var s Stat
+		if err := rows.Scan(&s.EventType, &s.Minute, &s.Count); err != nil {
+			log.Println("row scan failed:", err)
+			continue
+		}
+		stats = append(stats, s)
+	}
+	c.JSON(http.StatusOK, stats)
+}
