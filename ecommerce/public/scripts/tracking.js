@@ -1,5 +1,5 @@
 (function () {
-  const TRACKING_ENDPOINT = "http://localhost:8080/events/add"; // change to actual endpoint
+  const TRACKING_ENDPOINT = "http://localhost:8080/events/add";
 
   const sessionId = (() => {
     const key = "clicktrail_session_id";
@@ -11,16 +11,45 @@
     return id;
   })();
 
+  const getUserData = () => {
+    try {
+      return JSON.parse(localStorage.getItem("user-store") || "{}");
+    } catch {
+      return {};
+    }
+  };
+
+  const getLocation = () => {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) return resolve(null);
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          resolve({ latitude, longitude });
+        },
+        () => resolve(null),
+        { timeout: 3000 }
+      );
+    });
+  };
+
   const sendEvent = async (eventType, data = {}) => {
-    const payload = {
+    const basePayload = {
       eventType,
       timestamp: new Date().toISOString(),
       url: window.location.href,
       referrer: document.referrer,
       userAgent: navigator.userAgent,
       sessionId,
-      ...data,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      user: getUserData(), // pulled from localStorage or empty
     };
+
+    const location = await getLocation();
+    if (location) basePayload.location = location;
+
+    const payload = { ...basePayload, ...data };
 
     try {
       await fetch(TRACKING_ENDPOINT, {
@@ -29,7 +58,6 @@
         body: JSON.stringify(payload),
       });
     } catch (err) {
-      // Optional: Log to console
       console.warn("Tracking failed:", err);
     }
   };
@@ -40,11 +68,12 @@
     sendEvent("add_to_cart", { itemId, itemName, price });
   };
 
-  const trackCheckout = (cartItems) => {
-    sendEvent("checkout", { cartItems });
-  };
   const trackRemoveFromCart = (itemId, itemName, price) => {
     sendEvent("remove_from_cart", { itemId, itemName, price });
+  };
+
+  const trackCheckout = (cartItems) => {
+    sendEvent("checkout", { cartItems });
   };
 
   const trackClick = (target) => {
@@ -52,19 +81,18 @@
       tag: target.tagName,
       id: target.id,
       className: target.className,
+      text: target.innerText?.slice(0, 100), // for context
     });
   };
 
-  // Initial page load tracking
   window.addEventListener("DOMContentLoaded", () => {
     trackPageView();
 
-    // Click tracking
     window.addEventListener("click", (e) => {
       const target = e.target;
       if (!target) return;
 
-      // Detect add to cart
+      // Add to Cart
       if (target.matches("[data-track='add-to-cart']")) {
         const itemId = target.getAttribute("data-item-id");
         const itemName = target.getAttribute("data-item-name");
@@ -73,7 +101,7 @@
         return;
       }
 
-      // Detect checkout
+      // Checkout
       if (target.matches("[data-track='checkout']")) {
         const cartData = window.localStorage.getItem("cart-store");
         try {
@@ -85,7 +113,7 @@
         return;
       }
 
-      // Detect remove from cart
+      // Remove from cart
       if (target.matches("[data-track='remove-from-cart']")) {
         const itemId = target.getAttribute("data-item-id");
         const itemName = target.getAttribute("data-item-name");
@@ -100,10 +128,10 @@
   });
 
   window.__ClickTrail = {
+    trackPageView,
     trackAddToCart,
+    trackRemoveFromCart,
     trackCheckout,
     trackClick,
-    trackPageView,
-    trackRemoveFromCart,
   };
 })();
