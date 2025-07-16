@@ -19,11 +19,11 @@ build: clean
 
 
 build-mac: clean
-	@cd api && @GOOS=darwin GOARCH=amd64 go build -o ./bin/ClickTrail ./main.go
+	@cd api && GOOS=darwin GOARCH=amd64 go build -o ./bin/ClickTrail ./main.go
 	@chmod +x ./bin/ClickTrail
 
 build-linux: clean
-	@cd api && @GOOS=linux GOARCH=amd64 go build -o ./bin/ClickTrail ./main.go
+	@cd api && GOOS=linux GOARCH=amd64 go build -o ./bin/ClickTrail ./main.go
 	@chmod +x ./bin/ClickTrail
 
 build-windows: clean-win
