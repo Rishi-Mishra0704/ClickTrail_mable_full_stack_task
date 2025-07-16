@@ -4,4 +4,4 @@
 set -e
 
 # Run the Makefile target
-make run
+make build
