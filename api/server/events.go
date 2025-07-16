@@ -45,7 +45,7 @@ func (s *Server) TrackEventHandler(c *gin.Context) {
 	delete(raw, "referrer")
 	delete(raw, "userAgent")
 	delete(raw, "sessionId")
-
+	raw["ip"] = c.ClientIP()
 	// Marshal extra fields as JSON string
 	metaBytes, err := json.Marshal(raw)
 	if err != nil {
