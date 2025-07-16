@@ -24,7 +24,6 @@ const Index = () => {
   if (!checked) return null;
   return (
     <PageLayout>
-      <h1 className="text-3xl font-bold mb-6 text-center">Products</h1>
       {Object.entries(grouped).map(([category, products]) => (
         <div key={category} className="mb-10">
           <h2 className="text-2xl font-semibold mb-4 capitalize border-b border-gray-300 pb-1">

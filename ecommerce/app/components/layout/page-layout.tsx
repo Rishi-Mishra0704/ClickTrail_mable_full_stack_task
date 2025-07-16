@@ -33,7 +33,7 @@ const PageLayout: FC<PageLayoutProps> = ({ children }) => {
 
           <nav className="flex items-center justify-between gap-8">
             <Link
-              to={PAGE_ROUTES.cart.base}
+              to={PAGE_ROUTES.cart.checkout}
               className="relative text-lg font-medium hover:text-blue-600 flex items-center gap-2"
             >
               <FaCartPlus size={24} />

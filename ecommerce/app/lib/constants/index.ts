@@ -10,6 +10,9 @@ export const API_ROUTES = {
     products: {
       all: "/products",
     },
+    carts:{
+      add:"/carts"
+    }
   },
 };
 
@@ -20,6 +23,7 @@ export const PAGE_ROUTES = {
     login: "/auth/login",
   },
   cart: {
-    base: "/cart",
+    checkout: "/cart/checkout",
+    checkoutSuccess: "/cart/success"
   },
 };
