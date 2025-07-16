@@ -75,6 +75,10 @@ const CartCheckout = () => {
                     <Button
                       variant="destructive"
                       onClick={() => handleRemove(product.id)}
+                      data-track="remove-from-cart"
+                      data-item-id={product.id}
+                      data-item-name={product.title}
+                      data-item-price={product.price}
                     >
                       Remove
                     </Button>
@@ -94,9 +98,10 @@ const CartCheckout = () => {
         Total: ${totalPrice.toFixed(2)}
       </div>
       <div className="flex justify-center mt-4">
-        <Button className="w-full max-w-[320px]" onClick={handleCheckout}>
+        <Button className="w-full mt-10" data-track="checkout">
           Proceed to Checkout
         </Button>
+
         {error && (
           <div className="text-center text-red-500 mt-4 text-sm">{error}</div>
         )}

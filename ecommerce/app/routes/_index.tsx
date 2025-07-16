@@ -51,6 +51,10 @@ const Index = () => {
                   <Button
                     className="w-full mt-2"
                     onClick={() => addToCart(product)}
+                    data-track="add-to-cart"
+                    data-item-id={product.id}
+                    data-item-name={product.title}
+                    data-item-price={product.price}
                   >
                     Add to Cart
                   </Button>
