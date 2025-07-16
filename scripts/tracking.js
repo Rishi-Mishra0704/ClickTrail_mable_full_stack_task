@@ -1,3 +1,4 @@
+
 (function () {
   const TRACKING_ENDPOINT = "https://clicktrail-mable-full-stack-task.onrender.com/events/add";
 
