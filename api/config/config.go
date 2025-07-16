@@ -22,9 +22,12 @@ func LoadConfig(path string) (config Config, err error) {
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 
-	if err = viper.ReadInConfig(); err != nil {
-		log.Printf("No .env file found in %s: %v", path, err)
-		return
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			log.Println(".env not found, using system environment variables")
+		} else {
+			return config, err // actual error in env file
+		}
 	}
 
 	err = viper.Unmarshal(&config)
