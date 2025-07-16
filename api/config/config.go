@@ -17,17 +17,15 @@ type Config struct {
 }
 
 func LoadConfig(path string) (config Config, err error) {
-	viper.AddConfigPath(path)
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
-	viper.AutomaticEnv()
+	viper.AddConfigPath(path)
+	viper.AddConfigPath(".") // fallback to current dir
 
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			log.Println(".env not found, using system environment variables")
-		} else {
-			return config, err // actual error in env file
-		}
+	// Always read from system environment variables
+	viper.AutomaticEnv()
+	if err = viper.ReadInConfig(); err != nil {
+		log.Println(".env not found, falling back to system environment variables only")
 	}
 
 	err = viper.Unmarshal(&config)
