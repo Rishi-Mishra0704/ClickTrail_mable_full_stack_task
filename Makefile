@@ -14,8 +14,9 @@ test:
 
 build: clean
 	@mkdir -p bin
-	@cd api && @go build -o ./bin/ClickTrail.exe ./main.go
+	@cd api && go build -o ./bin/ClickTrail.exe ./main.go
 	@chmod +x ./bin/ClickTrail
+
 
 build-mac: clean
 	@cd api && @GOOS=darwin GOARCH=amd64 go build -o ./bin/ClickTrail ./main.go
@@ -29,7 +30,7 @@ build-windows: clean-win
 	@cd api && set GOOS=windows&& set GOARCH=amd64&& go build -o ./bin/ClickTrail.exe main.go
 
 build-windows-386: clean-win
-	@cd api && @set GOOS=windows&& set GOARCH=386&& go build -o ./bin/ClickTrail.exe main.go
+	@cd api && set GOOS=windows&& set GOARCH=386&& go build -o ./bin/ClickTrail.exe main.go
 
 build-mac-arm64: clean
 	@GOOS=darwin GOARCH=arm64 go build -o ./bin/ClickTrail ./main.go
