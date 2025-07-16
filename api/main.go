@@ -16,7 +16,7 @@ func main() {
 		log.Fatal("config load failed:", err)
 	}
 
-	clickhouse, err := db.NewClickhouseConn(cfg.ClickHouseHost, cfg.ClickHousePort, cfg.ClickHouseUser, cfg.ClickHousePassword)
+	clickhouse, err := db.NewClickhouseConn(cfg.ClickHouseHost, cfg.ClickHouseUser, cfg.ClickHousePassword)
 	if err != nil {
 		log.Fatal("could not load clickhouse db:", err)
 	}

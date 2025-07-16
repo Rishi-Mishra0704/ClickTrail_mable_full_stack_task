@@ -12,7 +12,6 @@ type Config struct {
 	Mode               string `mapstructure:"MODE"`
 	Port               string `mapstructure:"PORT"`
 	ClickHouseHost     string `mapstructure:"CLICKHOUSE_HOST"`
-	ClickHousePort     string `mapstructure:"CLICKHOUSE_PORT"`
 	ClickHousePassword string `mapstructure:"CLICKHOUSE_PASSWORD"`
 	ClickHouseUser     string `mapstructure:"CLICKHOUSE_USER"`
 	JWTSecretKey       string `mapstructure:"JWT_SECRET_KEY"`
