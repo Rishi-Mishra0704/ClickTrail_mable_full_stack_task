@@ -130,7 +130,6 @@ See `./links/links.txt` for:
 * 🎥 Walkthrough Video
 * 📊 Grafana Dashboard
 * 🌐 Live Frontend URL
-* 🚀 Live Backend URL (API)
 
 ---
 

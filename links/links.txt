@@ -2,4 +2,3 @@ GRAFANA DASHBOARD: https://rishimishra0404.grafana.net/goto/Fjpbq58NR?orgId=1
 
 FRONTEND: https://click-trail-mable-full-stack-task.vercel.app/
 
-BACKEND: https://clicktrail-mable-full-stack-task.onrender.com
