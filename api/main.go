@@ -11,7 +11,7 @@ import (
 func main() {
 
 	// Load environment/configuration variables from the project root (e.g., .env)
-	cfg, err := config.LoadConfig("./api")
+	cfg, err := config.LoadConfig(".")
 	if err != nil {
 		log.Fatal("config load failed:", err)
 	}
